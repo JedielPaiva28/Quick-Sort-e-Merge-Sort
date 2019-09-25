@@ -1,0 +1,101 @@
+/*  Merge Sort */
+#include<stdlib.h>
+#include<stdio.h>
+
+// Unir dois sub arrays de arr[].
+// O primeiro sub array é arr[l..m]
+// O segundo sub array é arr[m+1..r]
+
+void merge(int arr[], int l, int m, int r)
+{
+	int i, j, k;
+	int n1 = m - l + 1;
+	int n2 = r - m;
+
+	/* criando os arrays */
+	int L[n1], R[n2];
+
+	/* Copiando os dados para L[] e R[] */
+	for (i = 0; i < n1; i++)
+		L[i] = arr[l + i];
+	for (j = 0; j < n2; j++)
+		R[j] = arr[m + 1+ j];
+
+	/* Unindo os arrays e voltando arr[l..r]*/
+	i = 0; // Indice inicial do primeiro sub array
+	j = 0; // Indice inicial do segundo sub array
+	k = l; // Indice inicial da União dos sub array
+    while (i < n1 && j < n2)
+	{
+		if (L[i] <= R[j])
+		{
+			arr[k] = L[i];
+			i++;
+		}
+		else
+		{
+			arr[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+
+	/* copiar os elementos restante de L[], se existir algum */
+	while (i < n1)
+	{
+		arr[k] = L[i];
+		i++;
+		k++;
+	}
+
+	/* copiar os elementos restante de R[], se existir algum*/
+	while (j < n2)
+	{
+		arr[k] = R[j];
+		j++;
+		k++;
+	}
+}
+
+/* l é o indice esquerdo e r é o indice direito do
+sub-array de arr a ser sorteado */
+void mergeSort(int arr[], int l, int r)
+{
+	if (l < r)
+	{
+		// O mesmo que (l+r)/2, para evitar overflow
+
+		int m = l+(r-l)/2;
+
+		// Classificar primeira e segunda metades
+		mergeSort(arr, l, m);
+		mergeSort(arr, m+1, r);
+
+		merge(arr, l, m, r);
+	}
+}
+
+/* Função para print o array */
+void printArray(int A[], int size)
+{
+	int i;
+	for (i=0; i < size; i++)
+		printf("%d ", A[i]);
+	printf("\n");
+}
+
+/* Programa para testar as funções acima */
+int main()
+{
+	int arr[] = {12, 11, 13, 5, 6, 7};
+	int arr_size = sizeof(arr)/sizeof(arr[0]);
+
+	printf("O Array fornecido eh \n");
+	printArray(arr, arr_size);
+
+	mergeSort(arr, 0, arr_size - 1);
+
+	printf("\nO Array ordenado eh \n");
+	printArray(arr, arr_size);
+	return 0;
+}
